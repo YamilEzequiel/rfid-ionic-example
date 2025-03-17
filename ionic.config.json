@@ -1,0 +1,7 @@
+{
+  "name": "example-rfid",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

@@ -1,0 +1,102 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title> Lector RFID </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-button
+          expand="block"
+          (click)="initReader()"
+          [disabled]="isReading"
+        >
+          <ion-icon name="play" slot="start"></ion-icon>
+          Iniciar Lectura
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button
+          expand="block"
+          (click)="stopReader()"
+          [disabled]="!isReading"
+          color="danger"
+        >
+          <ion-icon name="stop" slot="start"></ion-icon>
+          Detener Lectura
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <div class="text-center">
+      <ion-col>
+        <ion-range
+          min="0"
+          max="30"
+          step="1"
+          [(ngModel)]="power"
+          (ionChange)="setPower($event.detail.value)"
+          snaps="true"
+          ticks="true"
+          labelPlacement="top"
+        >
+          <div slot="label">Potencia del lector (dBm)</div>
+        </ion-range>
+      </ion-col>
+    </div>
+
+    <ion-row>
+      <ion-col>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Información del Tag</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-list>
+              <ion-item *ngIf="currentTag">
+                <ion-label>
+                  <h2>EPC: {{ currentTag.epc }}</h2>
+                  <p>RSSI: {{ currentTag.rssi }}</p>
+                </ion-label>
+              </ion-item>
+              <ion-item *ngIf="!currentTag">
+                <ion-label>
+                  <p>No hay tag detectado</p>
+                </ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Tags detectados</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-list>
+              <ion-list-header>
+                <ion-label>Tags detectados ({{ tagList.length }})</ion-label>
+              </ion-list-header>
+              <ion-item *ngFor="let tag of tagList; let i = index">
+                <ion-label>
+                  <h2>Tag #{{ i + 1 }}</h2>
+                  <p>EPC: {{ tag.epc }}</p>
+                  <p>RSSI: {{ tag.rssi }}</p>
+                </ion-label>
+              </ion-item>
+              <ion-item *ngIf="tagList.length === 0">
+                <ion-label>No se han detectado tags</ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
